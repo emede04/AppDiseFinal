@@ -1,4 +1,3 @@
-
 <?php
 
 $server = "localhost";
@@ -13,13 +12,14 @@ or die("Ha sucedido un error inexperado en la conexion de la base de datos");
 //generamos la consulta
 $nombre = $_GET["nombre"];
 $autor = $_GET["autor"];
-$año = $_GET["año"];
+$anio = $_GET["anio"];
 $descripcion =  $_GET["descripcion"];
 $imagen  =  $_GET["imagen"];
-  $sql = "INSERT INTO `Pelicula`(`nombre`, `autor`, `año`, `descripcion`, `imagen` VALUES ('$nombre', '$autor', '$año','$descripcion','$imagen')";
+$sql = "INSERT INTO Pelicula (nombre, autor , anio, descripcion, Imagen) VALUES ('$nombre','$autor','$anio','$descripcion','$imagen')";
+mysqli_set_charset($conexion, "utf8"); //formato de datos utf8
 echo $sql;
 
-mysqli_set_charset($conexion, "utf8"); //formato de datos utf8
+
 if (mysqli_query($conexion, $sql)) {
       echo "New record created successfully";
 } else {
@@ -29,8 +29,6 @@ if (mysqli_query($conexion, $sql)) {
 //desconectamos la base de datos
 $close = mysqli_close($conexion)
 or die("Ha sucedido un error inexperado en la desconexion de la base de datos");
-
-
 
 
 ?>

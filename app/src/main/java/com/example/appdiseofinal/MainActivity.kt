@@ -1,13 +1,13 @@
 package com.example.appdiseofinal
 
-import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.AnimatedContentScope.SlideDirection.Companion.Start
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,7 +24,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -32,14 +31,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -99,7 +98,7 @@ class MainActivity : ComponentActivity() {
     fun TopBar(scope: CoroutineScope, scaffoldState: ScaffoldState) {
 
         TopAppBar(
-            title = { Text(text = "Aplicacion final de diseño", fontSize = 18.sp) },
+            title = { Text(text = "Aplicación Diseño de interfaces", fontSize = 18.sp) },
             navigationIcon = {
                 IconButton(onClick = {
                     scope.launch {
@@ -130,8 +129,8 @@ class MainActivity : ComponentActivity() {
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
-                            MaterialTheme.colors.onSurface,
-                            MaterialTheme.colors.secondaryVariant,
+                            Color(0xFF232b33),
+                            Color(0xFF232b33),
                         )
                     )
                 )
@@ -140,21 +139,17 @@ class MainActivity : ComponentActivity() {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(120.dp)
+                    .height(220.dp)
                     .background(MaterialTheme.colors.onSurface),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
 
-                Text(text = "LETTERBOXD")
+                CargaImagenLarga(url = "https://a.ltrbxd.com/logos/letterboxd-logo-v-neg-rgb-1000px.png")
 
             }
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(5.dp)
-            )
+
 
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
@@ -181,7 +176,7 @@ class MainActivity : ComponentActivity() {
             Spacer(modifier = Modifier.weight(1f))
 
             Text(
-                text = "Maria de los Dolores Adamuz Barranco",
+                text = "María de los Dolores Adamuz Barranco",
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
@@ -203,22 +198,14 @@ class MainActivity : ComponentActivity() {
                 .fillMaxWidth()
                 .clickable { onItemClick(item) }
                 .height(65.dp)
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            MaterialTheme.colors.onSurface,
-                            MaterialTheme.colors.secondaryVariant,
-                        )
-                    )
-                )
                 .padding(start = 10.dp)
         ) {
 
             Image(
-                painter = painterResource(id = R.drawable.ic_contact),
+                painter = painterResource(id = R.drawable.ic_home),
                 contentDescription = item.title,
                 colorFilter = ColorFilter.tint(Color.Black),
-                contentScale = ContentScale.Fit,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .height(24.dp)
                     .width(24.dp)
@@ -243,8 +230,8 @@ class MainActivity : ComponentActivity() {
 
         Column(
             modifier = Modifier
-                .width(1990.dp)
                 .fillMaxHeight()
+                .fillMaxWidth()
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
@@ -255,68 +242,153 @@ class MainActivity : ComponentActivity() {
                 ),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        )
+        {
             LazyColumn(
                 contentPadding = PaddingValues(10.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 horizontalAlignment = Alignment.Start
 
+
             )
             {
 
                 items(carte) { pelicula ->
-
-                    Row(modifier = Modifier) {
-                        Text(
-                            text = pelicula.nombre,
-                            color = Color.White,
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Box(
                             modifier = Modifier
-
-                                .fillMaxWidth()
-                                .background(MaterialTheme.colors.onSurface)
-                                .border(1.dp, Color.White)
-                                .padding(15.dp, 14.dp, 9.dp, 9.dp)
-                                .height(20.dp)
-                                .size(30.dp),
-                            style = TextStyle(
-                                fontSize = 15.sp,
-                                fontWeight = FontWeight.SemiBold
-                            )
+                                .border(3.dp, Color.Black)
+                                .height(300.dp)
+                                .width(200.dp),
                         )
 
+                        {
+
+                            CargaImagen(url = pelicula.imagen)
+
+                        }
+
+                        Column {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(50.dp)
+                            )
+
+                            {
+
+                                Text(
+                                    text = pelicula.nombre,
+                                    color = Color.White,
+                                    modifier = Modifier
+
+                                        .fillMaxWidth()
+
+                                        .padding(15.dp, 14.dp, 9.dp, 9.dp)
+                                        .height(40.dp)
+                                        .size(30.dp),
+                                    style = TextStyle(
+                                        fontFamily = FontFamily.Monospace,
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.ExtraBold
+
+
+                                    )
+                                )
+
+
+                            }
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(25.dp)
+                            )
+
+                            {
+
+                                Text(
+                                    text = pelicula.autor,
+                                    color = Color.White,
+                                    modifier = Modifier
+                                        .padding(10.dp, 0.dp, 0.dp, 0.dp)
+                                        .fillMaxWidth(),
+                                    style = TextStyle(
+                                        fontSize = 15.sp,
+                                        fontWeight = FontWeight.ExtraBold
+
+                                    )
+                                )
+
+
+                            }
+                            Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(25.dp)
+                                    )
+
+                            {
+
+                                Text(
+                                    text = pelicula.anio,
+                                    color = Color.White,
+                                    modifier = Modifier
+
+                                        .fillMaxWidth()
+
+                                        .padding(10.dp, 0.dp, 0.dp, 0.dp)                                        .height(40.dp)
+                                        .size(30.dp),
+                                    style = TextStyle(
+                                        fontSize = 15.sp,
+                                        fontWeight = FontWeight.ExtraBold
+
+                                    )
+                                )
+
+
+                            }
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight()
+                            )
+
+                            {
+
+                                Text(
+                                    text = pelicula.descripcion,
+                                    color = Color.White,
+                                    modifier = Modifier
+
+                                        .fillMaxWidth()
+                                        .fillMaxHeight()
+                                        .padding(10.dp, 0.dp, 0.dp, 0.dp)
+                                        ,
+                                    style = TextStyle(
+                                        fontSize = 15.sp,
+                                        fontWeight = FontWeight.ExtraBold
+
+                                    )
+                                )
+
+
+                            }
+
+
+
+                        }
+
+
                     }
-
-
-
-
-                    Box(
-                        modifier = Modifier
-
-                            .border(2.dp, Color.White)
-                            .background(Color.DarkGray)
-                            .fillMaxWidth(),
-
-
-
-
-                    )
-
-                    {
-
-                        CargaImagen(url = pelicula.imagen)
-
-                    }
-
-
 
 
                 }
 
-
             }
-
-        }
-    }
+        }}
 
 
     @Composable
@@ -376,7 +448,8 @@ class MainActivity : ComponentActivity() {
                 textStyle = TextStyle(textAlign = TextAlign.Left)
 
             )
-            TextField(value = txtDescripcion,
+            TextField(
+                value = txtDescripcion,
                 onValueChange = { nuevo -> txtDescripcion = nuevo },
                 label = {
                     Text(text = "descripcion")
@@ -504,23 +577,49 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun interneto() {
+    fun interneto( url: String) {
         Column(
-            modifier = Modifier
-                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxWidth()
         ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .background(MaterialTheme.colors.primary)
+            ) {
+                AndroidView(
+                    factory = {
+                        WebView(it).apply {
+                            webViewClient = object : WebViewClient() {
+                                override fun shouldOverrideUrlLoading(
+                                    view: WebView?,
+                                    request: WebResourceRequest?
+                                ): Boolean {
+                                    return false
+                                }
+                            }
+                        }
+                    }
+                ) {
+                    it.loadUrl(url);
+                    it.settings.javaScriptEnabled = true;
+                    it.settings.loadWithOverviewMode = true;
+                    it.settings.useWideViewPort = true;
 
-            Text(
-                text = "Letterboxd",
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                fontSize = 30.sp,
-                textAlign = TextAlign.Center
-            )
+                    it.settings.setSupportZoom(true);
+                    it.settings.builtInZoomControls = true;
+                    it.settings.displayZoomControls = false;
+
+                    it.scrollBarStyle = WebView.SCROLLBARS_OUTSIDE_OVERLAY;
+                    it.isScrollbarFadingEnabled = false;
 
 
+                }
+            }
         }
     }
 
@@ -542,7 +641,7 @@ class MainActivity : ComponentActivity() {
             }
 
             composable(NavegacionItem.interneto.route) {
-                interneto()
+                interneto("https://letterboxd.com/")
             }
 
 
@@ -555,12 +654,25 @@ class MainActivity : ComponentActivity() {
         Image(
             painter = rememberImagePainter(url),
             contentDescription = "imagen",
-            contentScale = ContentScale.Crop,
             modifier = Modifier
-
+                .fillMaxWidth()
+                .fillMaxHeight()
                 .padding(1.dp)
-                .height(200.dp)
         )
+    }
+@Composable
+   fun CargaImagenLarga(url: String) {
+        Image(
+            painter = rememberImagePainter(url),
+            contentDescription = "imagen",
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+
+                .padding(1.dp),
+            contentScale = ContentScale.FillBounds,
+
+            )
     }
 
 
@@ -583,9 +695,9 @@ class MainActivity : ComponentActivity() {
         return
     }
 
-    fun insert(nombre: String, autor: String, año: String, descripcion: String, imagen: String) {
+    fun insert(nombre: String, autor: String, anio: String, descripcion: String, imagen: String) {
         val url =
-            "http://iesayala.ddns.net/mdadamuz/insert_peliculas.php/?nombre=$nombre&autor=$autor&año=$año&descripcion=$descripcion&imagen=$imagen"
+            "http://iesayala.ddns.net/mdadamuz/insert_peliculas.php/?nombre=$nombre&autor=$autor&anio=$anio&descripcion=$descripcion&imagen=$imagen"
         lee(url)
 
     }
@@ -630,5 +742,5 @@ class MainActivity : ComponentActivity() {
 
 
     }
-
 }
+

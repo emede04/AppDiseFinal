@@ -13,6 +13,8 @@ or die("Ha sucedido un error inexperado en la conexion de la base de datos");
 $nombre = $_GET["nombre"];
 
   $sql = "DELETE FROM `Pelicula` WHERE `nombre` = '$nombre'";
+
+
 echo $sql;
 
 mysqli_set_charset($conexion, "utf8"); //formato de datos utf8
