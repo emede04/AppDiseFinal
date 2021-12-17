@@ -129,8 +129,8 @@ class MainActivity : ComponentActivity() {
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
-                            Color(0xFF232b33),
-                            Color(0xFF232b33),
+                            Color(0xFF2C3641),
+                            Color(0xFF000000),
                         )
                     )
                 )
