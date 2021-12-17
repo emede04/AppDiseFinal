@@ -1,3 +1,4 @@
+
 <?php
 
 $server = "localhost";
@@ -15,12 +16,12 @@ $autor = $_GET["autor"];
 $año = $_GET["año"];
 $descripcion =  $_GET["descripcion"];
 $imagen  =  $_GET["imagen"];
-  $sql = "SELECT * FROM Pelicula WHRE nombre ='$nombre'";
+  $sql = "INSERT INTO `Pelicula`(`nombre`, `autor`, `año`, `descripcion`, `imagen` VALUES ('$nombre', '$autor', '$año','$descripcion','$imagen')";
 echo $sql;
 
 mysqli_set_charset($conexion, "utf8"); //formato de datos utf8
 if (mysqli_query($conexion, $sql)) {
-      echo "New record deleted successfully";
+      echo "New record created successfully";
 } else {
       echo "Error: " . $sql . "<br>" . mysqli_error($conexion);
 }
@@ -28,6 +29,8 @@ if (mysqli_query($conexion, $sql)) {
 //desconectamos la base de datos
 $close = mysqli_close($conexion)
 or die("Ha sucedido un error inexperado en la desconexion de la base de datos");
+
+
 
 
 ?>

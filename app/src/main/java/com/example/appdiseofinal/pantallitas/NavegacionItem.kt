@@ -8,8 +8,8 @@ import com.example.appdiseofinal.R
 sealed class NavegacionItem(var route: String, var icon: Int, var title: String)
 {
     object Home : NavegacionItem("ListaPelicula", R.drawable.ic_home, "Lista Peliculas")
-    object Profile : NavegacionItem("BD", R.drawable.ic_profile, "BD")
-    object Settings : NavegacionItem("WebView", R.drawable.ic_settings, "WebView")
-    object Share : NavegacionItem("share", R.drawable.ic_share, "Share")
-    object Contact : NavegacionItem("contact", R.drawable.ic_contact, "Contacto")
+    object añadepeli : NavegacionItem("Añadepeli", android.R.drawable.stat_notify_more, "Añade una pelicula")
+    object borralapeli : NavegacionItem("borralapeli", android.R.drawable.btn_dialog, "Borra la pelicula")
+    object interneto : NavegacionItem("WebView", android.R.drawable.ic_search_category_default, "WebView")
+
 }
